@@ -34,4 +34,4 @@ ADDCOLUMNS(Sales,
 	"全球%",ROUND([sales fact]/A,6)*100 & "%"
 	)
 	,[國家%],DESC)
-	123456789
+	//測試是否marge有做變動
