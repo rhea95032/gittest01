@@ -1,0 +1,37 @@
+﻿EVALUATE
+VAR A = SUMX(Sales,Sales[Sales fact])
+VAR B = FORMAT(SUMX(FILTER(Sales,Sales[Country]="USA"),[SALES FACT])/SUMX(Sales,Sales[Sales fact]),"PERCENT")
+VAR C = FORMAT(SUMX(FILTER(Sales,Sales[Country]="France"),[SALES FACT])/SUMX(Sales,Sales[Sales fact]),"PERCENT")
+VAR D = FORMAT(SUMX(FILTER(Sales,Sales[Country]="Germany"),[SALES FACT])/SUMX(Sales,Sales[Sales fact]),"PERCENT")
+VAR E = FORMAT(SUMX(FILTER(Sales,Sales[Country]="Great Britain"),[SALES FACT])/SUMX(Sales,Sales[Sales fact]),"PERCENT")
+
+
+RETURN
+ROW("總營業額",A,"美國總營業額占比",B,"法國總營業額占比",C,"德國總營業額占比",D,"英國總營業額占比",E)
+
+EVALUATE
+ VAR A = SUMX(Sales,Sales[Sales fact])
+VAR B = SUMX(FILTER(Sales,Sales[Country]="USA"),[SALES FACT])
+VAR C = SUMX(FILTER(Sales,Sales[Country]="France"),[SALES FACT])
+VAR D = SUMX(FILTER(Sales,Sales[Country]="Germany"),[SALES FACT])
+VAR E = SUMX(FILTER(Sales,Sales[Country]="Great Britain"),[SALES FACT])
+
+RETURN
+TOPN(10,
+ADDCOLUMNS(Sales,
+	"國家%",
+	SWITCH(Sales[Country],
+		"USA",
+			ROUND([Sales fact]/B,6)*100 & "%",
+		"France",
+			ROUND([Sales fact]/C,6)*100 & "%",
+		"Germany",
+			ROUND([Sales fact]/D,6)*100 & "%",
+		"Great Britain",
+			ROUND([Sales fact]/E,6)*100 & "%",
+		"異常"),
+		
+	"全球%",ROUND([sales fact]/A,6)*100 & "%"
+	)
+	,[國家%],DESC)
+	
